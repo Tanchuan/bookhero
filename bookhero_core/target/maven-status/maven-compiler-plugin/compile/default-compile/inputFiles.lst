@@ -1,0 +1,6 @@
+D:\project\bookhero\bookhero_core\src\main\java\com\book\core\dao\UserDao.java
+D:\project\bookhero\bookhero_core\src\main\java\com\book\core\dao\pagination\dialect\MySQLDialect.java
+D:\project\bookhero\bookhero_core\src\main\java\com\book\core\dao\pagination\PaginationInfo.java
+D:\project\bookhero\bookhero_core\src\main\java\com\book\core\dao\pagination\PaginationInterceptor.java
+D:\project\bookhero\bookhero_core\src\main\java\com\book\core\service\UserSerivce.java
+D:\project\bookhero\bookhero_core\src\main\java\com\book\core\dao\pagination\dialect\Dialect.java

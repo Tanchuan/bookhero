@@ -1,0 +1,7 @@
+com\book\core\dao\UserDao.class
+com\book\core\dao\pagination\PaginationInfo.class
+com\book\core\dao\pagination\dialect\MySQLDialect.class
+com\book\core\dao\pagination\dialect\Dialect.class
+com\book\core\dao\pagination\PaginationInterceptor$ReflectHelper.class
+com\book\core\service\UserSerivce.class
+com\book\core\dao\pagination\PaginationInterceptor.class

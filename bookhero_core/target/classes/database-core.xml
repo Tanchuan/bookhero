@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+           http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+    
+    <context:property-placeholder location="classpath:jdbc-book-core.properties" ignore-unresolvable="true" />
+
+    <bean id="dataSource" name="cronDataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init"
+          destroy-method="close">
+        <!-- 数据库基本信息配置 -->
+        <property name="url" value="${jdbc_fund.url}"/>
+        <property name="driverClassName" value="${jdbc_fund.driverClassName}"/>
+        <property name="username" value="${jdbc_fund.username}"/>
+        <property name="password" value="${jdbc_fund.password}"/>
+        <!-- 配置监控统计拦截的filters，去掉后监控界面sql无法统计   -->
+        <property name="filters" value="${jdbc_fund.filters}"/>
+        <!-- 最大并发连接数 -->
+        <property name="maxActive" value="${jdbc_fund.maxActive}"/>
+        <!-- 初始化连接数量 -->
+        <property name="initialSize" value="${jdbc_fund.initialSize}"/>
+        <!-- 获取连接等待超时的时间 -->
+        <property name="maxWait" value="${jdbc_fund.maxWait}"/>
+        <!-- 最小空闲连接数 -->
+        <property name="minIdle" value="${jdbc_fund.minIdle}"/>
+        <!-- 间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+        <property name="timeBetweenEvictionRunsMillis" value="${jdbc_fund.timeBetweenEvictionRunsMillis}"/>
+        <!-- 一个连接在池中最小生存的时间，单位是毫秒 -->
+        <property name="minEvictableIdleTimeMillis" value="${jdbc_fund.minEvictableIdleTimeMillis}"/>
+        <!-- 用来检测连接是否有效的sql，要求是一个查询语句。 如果validationQuery为null，testOnBorrow、testOnReturn、 testWhileIdle都不会其作用 -->
+        <property name="validationQuery" value="${jdbc_fund.validationQuery}"/>
+        <property name="testWhileIdle" value="${jdbc_fund.testWhileIdle}"/>
+        <property name="testOnBorrow" value="${jdbc_fund.testOnBorrow}"/>
+        <property name="testOnReturn" value="${jdbc_fund.testOnReturn}"/>
+        <!-- 当大于0时， poolPreparedStatements自动触发修改为true -->
+        <property name="poolPreparedStatements" value="${jdbc_fund.poolPreparedStatements}"/>
+        <property name="maxOpenPreparedStatements" value="${jdbc_fund.maxOpenPreparedStatements}"/>
+
+        <!-- 当程序存在缺陷时，申请的连接忘记关闭，这时候，就存在连接泄漏了，用来关闭长时间不使用的连接。建议怀疑存在泄漏之后再打开 -->
+        <property name="removeAbandoned" value="${jdbc_fund.removeAbandoned}"/>
+        <!-- 1800 秒，也就是 30 分钟 -->
+        <property name="removeAbandonedTimeout" value="${jdbc_fund.removeAbandonedTimeout}"/>
+        <!-- 关闭 abanded 连接时输出错误日志 -->
+        <property name="logAbandoned" value="${jdbc_fund.logAbandoned}"/>
+        <!-- 监控统计拦截的filters -->
+        <!-- 并在filters属性中配置了log4j -->
+        <!-- <property name="proxyFilters">
+            <list>
+                <ref bean="stat-filter"/>
+                <ref bean="log-filter"/>
+            </list>
+        </property> -->
+    </bean>
+
+    <bean id="bookPaginationInterceptor" class="com.book.core.dao.pagination.PaginationInterceptor">
+        <property name="dialect">
+            <bean class="com.book.core.dao.pagination.dialect.MySQLDialect" />
+        </property>
+        <property name="paginationSqlRegEx" value=".*Cond"></property>
+    </bean>
+    
+    <bean id="bookheroSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="configLocation" value="classpath:SqlMapConfig-core.xml" />
+        <property name="dataSource" ref="dataSource" />
+        <property name="plugins">
+            <array>
+                <ref bean="bookPaginationInterceptor"/>
+<!--                 <bean class="com.lmlc.common.dao.SqlStatementInterceptor"></bean> -->
+            </array>
+        </property>
+    </bean>
+    
+</beans>
