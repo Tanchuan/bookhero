@@ -1,0 +1,13 @@
+{
+  "name": "base",
+  "main": "base.js",
+  "description": "requirejs and jquery",
+  "pack": [{
+    "name": "./base.js",
+    "include": [
+      "requirejs",
+      "jquery/mobile",
+      "jquery/addonLoader"
+    ]
+  }]
+}

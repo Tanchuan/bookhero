@@ -1,0 +1,10 @@
+{
+  "name": "core",
+  "main": "core.js",
+  "pack": {
+    "name": "core.js",
+    "exclude": [
+      "base"
+    ]
+  }
+}

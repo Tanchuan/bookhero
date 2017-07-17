@@ -1,0 +1,8 @@
+{
+	"name":"main",
+	"main": "main.js",
+	"pack": {
+		"name": "main.js",
+		"exclude": ["base", "core"]
+	}
+}

@@ -4,13 +4,11 @@
 <configuration>
 
      <typeAliases>
-         <!-- 用户数据 -->
-        <typeAlias type="com.lmlc.fund.core.dao.domain.FundAdjNav" alias="FundAdjNav"/>
+         <!-- 事件数据 -->
+        <typeAlias type="com.book.core.model.Event" alias="Event"/>
      </typeAliases>
     
     <mappers>
-    
-        <mapper resource="mybatis/UserDaoImpl.xml"/>
-
+        <mapper resource="mybatis/EventDaoImpl.xml"/>
     </mappers>
 </configuration>
