@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @Controller
@@ -45,11 +43,55 @@ public class HomePageController {
             cond.put("orderBy", "start_time");
             List<Event> events = eventDao.selectByCond(cond);
             if(null != events && !events.isEmpty()){
-                List<Map<String, Object>> weeks = Lists.newArrayList();
-                weeks.add(acquireEventsByTimeSpan(events, todayStart, lastDayOfThisWeek, 0));
-                weeks.add(acquireEventsByTimeSpan(events, lastDayOfThisWeek, lastDayOf2ndWeek, 1));
-                weeks.add(acquireEventsByTimeSpan(events, lastDayOf2ndWeek, lastDayOf3rdWeek, 2));
-                weeks.add(acquireEventsByTimeSpan(events, lastDayOf3rdWeek, lastDayOf4thWeek, 3));
+                List<Event> dayEvents = new ArrayList<>();
+
+                List<Map> days = new ArrayList<>();
+
+                List<Map> weeks = new ArrayList<>();
+                Event firstEvent = new Event();
+                for(Event event: events) {
+                    if (dayEvents.isEmpty()) {
+                        firstEvent = event;
+                        dayEvents.add(event);
+                    } else {
+
+                        if (DateUtils.equalWeek(event.getStartTime(), firstEvent.getStartTime())) {
+                            if (DateUtils.equalDay(event.getStartTime(), firstEvent.getStartTime())) {
+                                dayEvents.add(event);
+                            } else {
+                                setDays(days, dayEvents);
+
+                                firstEvent = event;
+                                dayEvents.add(event);
+                            }
+                        } else {
+                            if (!dayEvents.isEmpty()) {
+                                setDays(days, dayEvents);
+                            }
+                            if (!days.isEmpty()) {
+                                setWeeks(weeks, days);
+                            }
+
+                            firstEvent = event;
+                            dayEvents.add(event);
+                        }
+
+                    }
+
+
+
+                }
+                if (!dayEvents.isEmpty()) {
+                    setDays(days, dayEvents);
+                }
+                if (!days.isEmpty()) {
+                    setWeeks(weeks, days);
+                }
+//                List<Map<String, Object>> weeks = Lists.newArrayList();
+//                weeks.add(acquireEventsByTimeSpan(events, todayStart, lastDayOfThisWeek, 0));
+//                weeks.add(acquireEventsByTimeSpan(events, lastDayOfThisWeek, lastDayOf2ndWeek, 1));
+//                weeks.add(acquireEventsByTimeSpan(events, lastDayOf2ndWeek, lastDayOf3rdWeek, 2));
+//                weeks.add(acquireEventsByTimeSpan(events, lastDayOf3rdWeek, lastDayOf4thWeek, 3));
                 Map<String, Object> data =Maps.newHashMap();
                 data.put("weeks", weeks);
                 model.put("data", data);
@@ -63,6 +105,25 @@ public class HomePageController {
         return "mobile/index/main";
     }
 
+    private List<Map> setDays(List<Map> days, List<Event> dayEvents) {
+        Map<String, Object> day = Maps.newHashMap();
+        day.put("startTime", DateUtils.getDateStart(dayEvents.get(0).getStartTime()));
+        day.put("events", new ArrayList<>(dayEvents));
+        days.add(day);
+        dayEvents.clear();
+        return days;
+    }
+
+    private List<Map> setWeeks(List<Map> weeks, List<Map> days) {
+        Map<String, Object> week = Maps.newHashMap();
+        Date weekStart = DateUtils.getDateStart((Date)days.get(0).get("startTime"), Calendar.WEEK_OF_MONTH);
+        week.put("order", DateUtils.weeksNumFromNow(weekStart));
+        week.put("startTime", weekStart);
+        week.put("days", new ArrayList<>(days));
+        weeks.add(week);
+        days.clear();
+        return weeks;
+    }
     private Map<String, Object> acquireEventsByTimeSpan(List<Event> events, Date start, Date end, int order) {
 
         Map<String, Object> result = Maps.newHashMap();
