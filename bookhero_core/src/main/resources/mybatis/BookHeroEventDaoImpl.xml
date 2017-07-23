@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="Event">
-  <resultMap id="EventMapId" type="com.book.core.model.Event">
+  <resultMap id="EventMapId" type="com.book.core.model.BookHeroEvent">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="title" jdbcType="VARCHAR" property="title" />
     <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
@@ -96,7 +96,7 @@
       now()
     </trim>
   </insert>
-  <update id="updateById" parameterType="com.book.core.model.Event">
+  <update id="updateById" parameterType="com.book.core.model.BookHeroEvent">
     update tb_event
     <set>
       <if test="title != null">

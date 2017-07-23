@@ -2,7 +2,7 @@ package com.book.core.model;
 
 import java.util.Date;
 
-public class Event {
+public class BookHeroEvent {
     private Integer id;
 
     private String title;

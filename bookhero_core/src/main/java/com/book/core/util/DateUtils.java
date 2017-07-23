@@ -17,163 +17,6 @@ import java.util.TimeZone;
 public final class DateUtils {
 
     /**
-     * 
-     * @author bjpengpeng
-     * @date 2015年10月23日
-     * @description 获取给光大发送扣款时间的上限
-     * @param st
-     * @return
-     */
-    public static Timestamp getGDDebitUpperTime(Timestamp st) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(st);
-        int weekday = cal.get(Calendar.DAY_OF_WEEK);
-        cal.set(Calendar.HOUR_OF_DAY, 13);
-        cal.set(Calendar.MINUTE, 30);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MILLISECOND, 0);
-        switch (weekday) {
-            case Calendar.MONDAY:
-                return new Timestamp(cal.getTime().getTime());
-            case Calendar.TUESDAY:
-                return new Timestamp(cal.getTime().getTime());
-            case Calendar.WEDNESDAY:
-                return new Timestamp(cal.getTime().getTime());
-            case Calendar.THURSDAY:
-                return new Timestamp(cal.getTime().getTime());
-            case Calendar.FRIDAY:
-                return new Timestamp(cal.getTime().getTime());
-            case Calendar.SATURDAY:/*周六不发送*/
-                return null;
-            case Calendar.SUNDAY:/*周日不发送*/
-                return null;
-        }
-        return null;
-    }
-
-    /**
-     * 
-     * @author bjpengpeng
-     * @date 2015年10月23日
-     * @description 获取给光大发送扣款文件的时间 上限
-     * @return
-     */
-    public static Timestamp getGDDebitLowerTime(Timestamp upperTime) {
-        if (null == upperTime) {
-            return null;
-        }
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(upperTime);
-        int weekday = cal.get(Calendar.DAY_OF_WEEK);
-        cal.set(Calendar.HOUR_OF_DAY, 13);
-        cal.set(Calendar.MINUTE, 30);
-        cal.add(Calendar.DAY_OF_MONTH, -1);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MILLISECOND, 0);
-        switch (weekday) {
-            case Calendar.MONDAY:
-                cal.add(Calendar.DAY_OF_MONTH, -2);//周五
-                return new Timestamp(cal.getTime().getTime());
-            case Calendar.TUESDAY:
-                return new Timestamp(cal.getTime().getTime());
-            case Calendar.WEDNESDAY:
-                return new Timestamp(cal.getTime().getTime());
-            case Calendar.THURSDAY:
-                return new Timestamp(cal.getTime().getTime());
-            case Calendar.FRIDAY:
-                return new Timestamp(cal.getTime().getTime());
-            case Calendar.SATURDAY:/*周六不发送*/
-                return null;
-            case Calendar.SUNDAY:/*周日不发送*/
-                return null;
-        }
-        return null;
-    }
-
-    public static Date getGDConfirmTimeDesc(Timestamp orderTime) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(orderTime);
-        int weekday = cal.get(Calendar.DAY_OF_WEEK) - 1;
-        Calendar divisionTime = Calendar.getInstance();
-        divisionTime.set(Calendar.HOUR_OF_DAY, 13);
-        divisionTime.set(Calendar.MINUTE, 30);
-        divisionTime.set(Calendar.SECOND, 0);
-        switch (weekday) {
-            case 0:
-                cal.add(Calendar.DAY_OF_MONTH, 1);//下周一
-                cal.set(Calendar.HOUR_OF_DAY, 15);
-                cal.set(Calendar.MINUTE, 0);
-                return cal.getTime();
-            case 1:
-                if (orderTime.compareTo(divisionTime.getTime()) < 0) {
-                    cal.set(Calendar.HOUR_OF_DAY, 15);
-                    cal.set(Calendar.MINUTE, 0);
-                    return cal.getTime();
-                }
-                else {
-                    cal.add(Calendar.DAY_OF_MONTH, 1);//周二
-                    cal.set(Calendar.HOUR_OF_DAY, 15);
-                    cal.set(Calendar.MINUTE, 0);
-                    return cal.getTime();
-                }
-            case 2:
-                if (orderTime.compareTo(divisionTime.getTime()) < 0) {
-                    cal.set(Calendar.HOUR_OF_DAY, 15);
-                    cal.set(Calendar.MINUTE, 0);
-                    return cal.getTime();
-                }
-                else {
-                    cal.add(Calendar.DAY_OF_MONTH, 1);//周三
-                    cal.set(Calendar.HOUR_OF_DAY, 15);
-                    cal.set(Calendar.MINUTE, 0);
-                    return cal.getTime();
-                }
-            case 3:
-                if (orderTime.compareTo(divisionTime.getTime()) < 0) {
-                    cal.set(Calendar.HOUR_OF_DAY, 15);
-                    cal.set(Calendar.MINUTE, 0);
-                    return cal.getTime();
-                }
-                else {
-                    cal.add(Calendar.DAY_OF_MONTH, 1);//周四
-                    cal.set(Calendar.HOUR_OF_DAY, 15);
-                    cal.set(Calendar.MINUTE, 0);
-                    return cal.getTime();
-                }
-            case 4:
-                if (orderTime.compareTo(divisionTime.getTime()) < 0) {
-                    cal.set(Calendar.HOUR_OF_DAY, 15);
-                    cal.set(Calendar.MINUTE, 0);
-                    return cal.getTime();
-                }
-                else {
-                    cal.add(Calendar.DAY_OF_MONTH, 1);//周二
-                    cal.set(Calendar.HOUR_OF_DAY, 15);
-                    cal.set(Calendar.MINUTE, 0);
-                    return cal.getTime();
-                }
-            case 5:
-                if (orderTime.compareTo(divisionTime.getTime()) < 0) {
-                    cal.set(Calendar.HOUR_OF_DAY, 15);//周五扣款
-                    cal.set(Calendar.MINUTE, 0);
-                    return cal.getTime();
-                }
-                else {
-                    cal.add(Calendar.DAY_OF_MONTH, 3);//下周一
-                    cal.set(Calendar.HOUR_OF_DAY, 15);
-                    cal.set(Calendar.MINUTE, 0);
-                    return cal.getTime();
-                }
-            case 6:
-                cal.add(Calendar.DAY_OF_MONTH, 2);//下周一
-                cal.set(Calendar.HOUR_OF_DAY, 15);
-                cal.set(Calendar.MINUTE, 0);
-                return cal.getTime();
-        }
-        return cal.getTime();
-    }
-
-    /**
      * 对日期进行格式化
      * @param date
      * @param split
@@ -324,8 +167,6 @@ public final class DateUtils {
      *   @param orderDay
      *   @return
      *
-     *   2015年9月28日/下午5:58:46
-     *   mailto:"cuixiang"<cuixiang@corp.netease.com>
      */
     public static boolean equalDay(Date today, Date orderDay) {
         if (null == today || null == orderDay) {
@@ -358,7 +199,6 @@ public final class DateUtils {
 
     /**
      * 获取星期几描述
-     * @author bjwuguang
      * @param date
      * @return	周几，如：周一
      */
