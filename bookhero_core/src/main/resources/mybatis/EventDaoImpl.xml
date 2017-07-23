@@ -29,11 +29,12 @@
     <if test="cond.startTimeLower != null">
       start_time &gt;= #{cond.startTimeLower,jdbcType=TIMESTAMP}
     </if>
+    AND
     <if test="cond.startTimeUpper != null">
       start_time &lt;= #{cond.startTimeUpper,jdbcType=TIMESTAMP}
     </if>
-    <if test="orderBy != null">
-      order by #{orderBy,jdbcType=VARCHAR}
+    <if test="cond.orderBy != null">
+      order by ${cond.orderBy}
     </if>
 
   </select>

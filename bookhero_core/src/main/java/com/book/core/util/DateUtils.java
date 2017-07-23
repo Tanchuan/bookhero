@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
@@ -303,12 +304,18 @@ public final class DateUtils {
                 calendar.set(Calendar.SECOND, 0);
             case Calendar.SECOND:
                 calendar.set(Calendar.MILLISECOND, 0);
+            case Calendar.WEEK_OF_MONTH:
+//                英文从周六开始，TODO
+                calendar.set(Calendar.DAY_OF_WEEK, 0);
             default:
 
         }
         return calendar.getTime();
     }
 
+    public static int weeksNumFromNow(Date date) {
+        return getWeeksNum(date) - getWeeksNum(new Date());
+    }
     /**
      * 
      *  判断是否是同一天
@@ -329,6 +336,14 @@ public final class DateUtils {
         }
     }
 
+    public static boolean equalWeek(Date date, Date otherDate) {
+        return getWeeksNum(date) == getWeeksNum(otherDate);
+    }
+
+    public static int getWeeksNum (Date date) {
+        int weekMSecs = 7 * 24 * 3600 * 1000;
+        return (int)Math.floor(date.getTime()/ weekMSecs);
+    }
     public static int getDiffDays(Date begin, Date end) {
         return (int)(getDiffMinutes(begin, end) / 1440L);
     }
