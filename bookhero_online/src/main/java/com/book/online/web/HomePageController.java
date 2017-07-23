@@ -2,6 +2,7 @@ package com.book.online.web;
 
 import com.book.core.dao.BookHeroEventDao;
 import com.book.core.model.BookHeroEvent;
+import com.book.core.service.BookHeroEventService;
 import com.book.core.util.DateUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -22,9 +23,9 @@ import java.util.stream.Collectors;
 
 @Controller
 public class HomePageController {
-
+    
     @Resource
-    private BookHeroEventDao bookHeroEventDao;
+    private BookHeroEventService bookHeroEventService;
 
     /**
      * web首页
@@ -42,11 +43,9 @@ public class HomePageController {
             Date lastDayOf2ndWeek = DateUtils.getLastDayOfWeekCn(DateUtils.addDays(lastDayOfThisWeek, 1));
             Date lastDayOf3rdWeek = DateUtils.getLastDayOfWeekCn(DateUtils.addDays(lastDayOf2ndWeek, 1));
             Date lastDayOf4thWeek = DateUtils.getLastDayOfWeekCn(DateUtils.addDays(lastDayOf3rdWeek, 1));
-            Map<String, Object> cond = Maps.newHashMap();
-            cond.put("startTimeLower", todayStart);
-            cond.put("startTimeUpper", lastDayOf4thWeek);
-            cond.put("orderBy", "start_time");
-            List<BookHeroEvent> events = bookHeroEventDao.selectByCond(cond);
+
+            List<BookHeroEvent> events = bookHeroEventService.getBookHeroEventBy(todayStart,
+                    lastDayOf4thWeek, "start_time");
             if(null != events && !events.isEmpty()){
                 List<Map<String, Object>> weeks = Lists.newArrayList();
                 weeks.add(acquireEventsByTimeSpan(events, todayStart, lastDayOfThisWeek, 0));
