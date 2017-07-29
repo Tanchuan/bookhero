@@ -31,4 +31,13 @@ public class BookHeroEventServiceImpl implements BookHeroEventService {
         }
         return null;
     }
+
+    @Override
+    public boolean insert(BookHeroEvent event) {
+        if(null != event){
+            return bookHeroEventDao.insert(event) > 0;
+        } else {
+            return false;
+        }
+    }
 }

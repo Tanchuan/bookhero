@@ -5,10 +5,10 @@
 
      <typeAliases>
          <!-- 事件数据 -->
-        <typeAlias type="com.book.core.model.Event" alias="Event"/>
+        <typeAlias type="com.book.core.model.BookHeroEvent" alias="BookHeroEvent"/>
      </typeAliases>
     
     <mappers>
-        <mapper resource="mybatis/EventDaoImpl.xml"/>
+        <mapper resource="mybatis/BookHeroEventDaoImpl.xml"/>
     </mappers>
 </configuration>

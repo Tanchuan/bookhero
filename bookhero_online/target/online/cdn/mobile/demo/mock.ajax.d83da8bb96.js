@@ -1,1 +1,0 @@
-require(["jquery","//pop.lmlc.com/cdn/.remote/mockjax/jquery-mockjax/jquery.mockjax.fa3007ae2b.js"],function(o){o.mockjax({url:"/mockjax/list",responseText:Mock.mock({})})});

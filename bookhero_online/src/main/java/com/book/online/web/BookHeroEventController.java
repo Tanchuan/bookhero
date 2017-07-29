@@ -2,6 +2,7 @@ package com.book.online.web;
 
 import com.book.core.model.BookHeroEvent;
 import com.book.core.model.result.ResultData;
+import com.book.core.model.result.ResultInfo;
 import com.book.core.service.BookHeroEventService;
 import com.book.core.util.DateUtils;
 import com.google.common.collect.Lists;
@@ -42,11 +43,27 @@ public class BookHeroEventController {
 
     @RequestMapping(value={"/web/bookhero/event/create"}, method= RequestMethod.POST)
     @ResponseBody
-    public ResultData<Map<String, Object>> create(HttpServletRequest req, ModelMap model) {
+    public ResultInfo create(HttpServletRequest req) {
         final String apiName = "活动添加接口";
-        final String ftlName = "";
+        try {
+            String title = req.getParameter("title");
+            String startTimeStr = req.getParameter("startTime");
+            String endTimeStr = req.getParameter("endTime");
+            String address = req.getParameter("address");
+            String eventUrl = req.getParameter("eventUrl");
 
-        return null;
+            Date startTime = DateUtils.formatToDate(startTimeStr, "yyyy-MM-dd hh:mm:ss");
+            Date endTime = DateUtils.formatToDate(endTimeStr, "yyyy-MM-dd hh:mm:ss");
+            BookHeroEvent event = new BookHeroEvent(title, startTime, endTime, address, eventUrl);
+            if(bookHeroEventService.insert(event)){
+                return ResultInfo.CONSTANT.OK;
+            } else {
+                //TODO 日志报错
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ResultInfo.CONSTANT.SYS_ERR;
     }
 
 

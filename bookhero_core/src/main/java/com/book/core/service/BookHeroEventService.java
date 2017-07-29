@@ -12,4 +12,5 @@ public interface BookHeroEventService {
 
     List<BookHeroEvent> getBookHeroEventBy(Date begin, Date end, String orderBy);
 
+    boolean insert(BookHeroEvent event);
 }

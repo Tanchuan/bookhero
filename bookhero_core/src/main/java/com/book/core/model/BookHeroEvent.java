@@ -21,6 +21,20 @@ public class BookHeroEvent {
 
     private Date updateTime;
 
+
+    public BookHeroEvent() {
+        this.status = 1;
+    }
+
+    public BookHeroEvent(String title, Date startTime, Date endTime, String address, String eventUrl) {
+        this();
+        this.title = title;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.address = address;
+        this.eventUrl = eventUrl;
+    }
+
     public Integer getId() {
         return id;
     }

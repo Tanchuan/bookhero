@@ -1,3 +1,4 @@
 com\book\online\service\UserSerivce.class
-com\book\online\web\HomePageController.class
 com\book\online\web\UserController.class
+com\book\online\web\BookHeroEventController.class
+com\book\online\web\HomePageController.class
