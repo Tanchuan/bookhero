@@ -47,10 +47,17 @@ public class BookHeroEventController {
         final String apiName = "活动添加接口";
         try {
             String title = req.getParameter("title");
-            String startTimeStr = req.getParameter("startTime");
-            String endTimeStr = req.getParameter("endTime");
+            String startTimeStr = req.getParameter("startTime");//每期活动开始时间
+            String endTimeStr = req.getParameter("endTime");//每期活动结束时间
+            String startDateStr = req.getParameter("startDate");//活动持续期间起始日期
+            String endDateStr = req.getParameter("endDate");//活动持续期间截止日期
             String address = req.getParameter("address");
             String eventUrl = req.getParameter("eventUrl");
+            String note = req.getParameter("note");
+            String club = req.getParameter("club");
+            String img = req.getParameter("img");
+            String logo = req.getParameter("logo");
+            String repeatFrequencysStr = req.getParameter("repeatFrequency");
 
             Date startTime = DateUtils.formatToDate(startTimeStr, "yyyy-MM-dd hh:mm:ss");
             Date endTime = DateUtils.formatToDate(endTimeStr, "yyyy-MM-dd hh:mm:ss");
